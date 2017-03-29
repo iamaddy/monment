@@ -1,0 +1,10 @@
+/**app.wxss**/
+.container {
+  display: flex;
+  margin-bottom: 50rpx;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+ 	font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif,"宋体";
+} 

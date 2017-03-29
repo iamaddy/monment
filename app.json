@@ -1,0 +1,14 @@
+{
+  "pages":[
+    "pages/moment/moment",
+    "pages/index/index",
+    "pages/logs/logs",
+    "pages/post/post"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#171925",
+    "navigationBarTitleText": "朋友圈预览",
+    "navigationBarTextStyle":"#fff"
+  }
+}

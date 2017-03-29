@@ -1,0 +1,94 @@
+<!--index.wxml-->
+  	<scroll-view bindtap="pageTap" scroll-y="true" style="height: 100%;" bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+  		<view class="container">  
+	  		<view class="top-view" bindtap="bindImageTap">
+				<view class="background">
+					<text class="tips">轻触更换主题照片</text>
+				</view>
+			</view>
+			<view class="userinfo-nickname">{{userInfo.nickName}}</view>
+			<view bindtap="bindViewTap" class="userinfo">
+		    	<image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+		  	</view>
+		</view>
+
+		<view wx:for="{{moments}}" wx:for-index="idx" wx:for-item="item" class="monment-item">
+  			<view class="left-userinfo">
+		    	<image class="avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+		  	</view>
+  			<view class="right-info">
+  				<view class="nick-name">{{userInfo.nickName}}</view>
+  				<view class="monment-txt"><text>{{item.content}}</text></view>
+  				<view class="monment-images {{item.images.length > 1 ? 'mulit' : 'single-image'}}">
+  					<view wx:for="{{item.images}}" wx:for-item="image" class="image-content">
+  						<image data-isimg="1" bindlongtap="showImageDelete" bindload="imageOnLoad" data-idx="{{index}}" data-index="{{idx}}" data-src="{{image}}" bindtap="bindChangeImageTap"   src="{{image}}" background-size="cover"></image>
+  						<icon catchtap="tryDeleteImage" class="delete-image {{deleteHide}}"></icon>
+  					</view>
+  				</view>
+  				<view class="info">
+					<text class="time">{{item.timeStr}}</text>
+					<text class="icon"></text>
+				</view>
+  			</view>
+  		</view>
+
+  		<view class="monment-item">
+  			<view bindtap="bindViewTap" class="left-userinfo">
+		    	<image class="avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+		  	</view>
+  			<view class="right-info">
+  				<view class="nick-name">{{userInfo.nickName}}</view>
+  				<view class="monment-txt">阿娇哈哈哈哈哈的活动好很多很多豪华导航</view>
+  				<view class="monment-images  mulit">
+  					<image bindtap="bindpreviewImageTap" src="http://p.qpic.cn/wxapp/Xmnun9Io49SrhzuYDQ5rItJB6eUMhnZPPrbmVkoSnvXKYZexl71jvVO64VpzdVkaQvXzAwH4BDQ/150" background-size="cover"></image>
+  					<image  src="https://p.qpic.cn/wxapp/Xmnun9Io49SrhzuYDQ5rItJB6eUMhnZPPrbmVkoSnvXKYZexl71jvVO64VpzdVkaQvXzAwH4BDQ/150" background-size="cover"></image>
+  					<image  src="https://p.qpic.cn/wxapp/Xmnun9Io49SrhzuYDQ5rItJB6eUMhnZPPrbmVkoSnvXKYZexl71jvVO64VpzdVkaQvXzAwH4BDQ/150" background-size="cover"></image>
+  					<image  src="https://p.qpic.cn/wxapp/Xmnun9Io49SrhzuYDQ5rItJB6eUMhnZPPrbmVkoSnvXKYZexl71jvVO64VpzdVkaQvXzAwH4BDQ/150" background-size="cover"></image>
+  					<image  src="https://p.qpic.cn/wxapp/Xmnun9Io49SrhzuYDQ5rItJB6eUMhnZPPrbmVkoSnvXKYZexl71jvVO64VpzdVkaQvXzAwH4BDQ/150" background-size="cover"></image>
+  					<image  src="https://p.qpic.cn/wxapp/Xmnun9Io49SrhzuYDQ5rItJB6eUMhnZPPrbmVkoSnvXKYZexl71jvVO64VpzdVkaQvXzAwH4BDQ/150" background-size="cover"></image>
+  					<image  src="https://p.qpic.cn/wxapp/Xmnun9Io49SrhzuYDQ5rItJB6eUMhnZPPrbmVkoSnvXKYZexl71jvVO64VpzdVkaQvXzAwH4BDQ/150" background-size="cover"></image>
+  					<image  src="https://p.qpic.cn/wxapp/Xmnun9Io49SrhzuYDQ5rItJB6eUMhnZPPrbmVkoSnvXKYZexl71jvVO64VpzdVkaQvXzAwH4BDQ/150" background-size="cover"></image>
+  					<image  src="https://p.qpic.cn/wxapp/Xmnun9Io49SrhzuYDQ5rItJB6eUMhnZPPrbmVkoSnvXKYZexl71jvVO64VpzdVkaQvXzAwH4BDQ/150" background-size="cover"></image>
+
+  				</view>
+
+  				<view class="info">
+  					<text class="time">刚刚</text>
+  					<text class="icon"></text>
+  				</view>
+  			</view>
+  		</view>
+
+  		<view class="monment-item">
+  			<view bindtap="bindViewTap" class="left-userinfo">
+		    	<image class="avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+		  	</view>
+  			<view class="right-info">
+  				<view class="nick-name">{{userInfo.nickName}}</view>
+  				<view class="monment-txt">阿娇哈哈哈哈哈的活动好很多很多豪华导航</view>
+  				<view class="monment-images  mulit">
+  					<image  src="https://p.qpic.cn/wxapp/Xmnun9Io49SrhzuYDQ5rItJB6eUMhnZPPrbmVkoSnvXKYZexl71jvVO64VpzdVkaQvXzAwH4BDQ/150" background-size="cover"></image>
+  					<image  src="https://p.qpic.cn/wxapp/Xmnun9Io49SrhzuYDQ5rItJB6eUMhnZPPrbmVkoSnvXKYZexl71jvVO64VpzdVkaQvXzAwH4BDQ/150" background-size="cover"></image>
+  					<image src="https://p.qpic.cn/wxapp/Xmnun9Io49SrhzuYDQ5rItJB6eUMhnZPPrbmVkoSnvXKYZexl71jvVO64VpzdVkaQvXzAwH4BDQ/150" background-size="cover"></image>
+  				</view>
+  			</view>
+  		</view>
+
+
+  		<view class="monment-item">
+  			<view bindtap="bindViewTap" class="left-userinfo">
+		    	<image class="avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+		  	</view>
+  			<view class="right-info">
+  				<view class="nick-name">{{userInfo.nickName}}</view>
+  				<view class="monment-txt">阿娇哈哈哈哈哈的活动好很多很多豪华导航</view>
+  				<view class="monment-images mulit">
+  					<image src="https://p.qpic.cn/wxapp/Xmnun9Io49SrhzuYDQ5rItJB6eUMhnZPPrbmVkoSnvXKYZexl71jvVO64VpzdVkaQvXzAwH4BDQ/150" background-size="cover"></image>
+  					<image  src="https://p.qpic.cn/wxapp/Xmnun9Io49SrhzuYDQ5rItJB6eUMhnZPPrbmVkoSnvXKYZexl71jvVO64VpzdVkaQvXzAwH4BDQ/150" background-size="cover"></image>
+  					<image  src="https://p.qpic.cn/wxapp/Xmnun9Io49SrhzuYDQ5rItJB6eUMhnZPPrbmVkoSnvXKYZexl71jvVO64VpzdVkaQvXzAwH4BDQ/150" background-size="cover"></image>
+  				</view>
+  			</view>
+  		</view>
+	</scroll-view>
+<image class="post-btn" bindtap="bindPostViewTap" background-size="cover"  src="https://wximg.qq.com/wxgame/temp/806dc97759e712ba3f9b3d9c5f6e6daa.png">
+</image>
