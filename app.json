@@ -1,9 +1,6 @@
 {
   "pages":[
-    "pages/moment/moment",
-    "pages/index/index",
-    "pages/logs/logs",
-    "pages/post/post"
+    "pages/moment/moment"
   ],
   "window":{
     "backgroundTextStyle":"light",

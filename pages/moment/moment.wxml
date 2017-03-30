@@ -6,7 +6,7 @@
     <image style="display:none;" src="../img/pengyouquan-loading.png" alt="" class="moment-preview__loading" />
 
     <view class="moment-preview__banner">
-        <image style="height:{{windowWidth}}px;" class="moment-preview__banner-bg" src="../img/bg-banner.png" alt=""/>
+        <image bindtap="bindChangeBgImageTap" style="height:{{windowWidth}}px;" class="moment-preview__banner-bg" src="{{bgImgUrl || '../img/bg-banner.png'}}" alt=""/>
         <view class="moment-preview__name">{{userInfo.nickName}}</view>
         <view class="moment-preview__avatar">
             <image class="moment-preview__avatar-img" src="{{userInfo.avatarUrl || '../img/default-logo.png'}}" alt=""/>
@@ -22,7 +22,7 @@
                     <view class="moment-preview__item-text">测试文案测试文案测试文案, 测试文案测试文案测试文案,测试文案测试文案测试文案,</view>
 
                     <!--有几个图就用数字 moment-preview__item-imgs_ 1 2 3 4 5 6 7 8 9 -->
-                    <view class="moment-preview__item-imgs moment-preview__item-imgs_{{moments.length + 2}}">
+                    <view class="moment-preview__item-imgs moment-preview__item-imgs_{{moments.length + 1}}">
                         <!--当前选中 moment-preview__item-pic-box_current-->
                         <view wx:key="url" wx:for="{{moments}}" wx:for-index="idx" wx:for-item="item" class="moment-preview__item-pic-box {{item.current ? 'moment-preview__item-pic-box_current' : ''}}" data-index="{{idx}}" bindtap="{{item.change ? 'changeImage' : 'checkImage'}}">
                             <image background-size="cover" src="{{item.url}}" alt="" class="moment-preview__item-pic"/>

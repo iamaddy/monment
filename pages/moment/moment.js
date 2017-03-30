@@ -2,6 +2,9 @@
 //获取应用实例
 var app = getApp();
 var Storage_KEY = 'momentKey';
+var BG_STORAGE_KEY = '__BG_URL_KEY';
+var USER_INFO_STORAGE_KEY = '__USER_INFO_KEY';
+
 var Util = require('../../utils/util.js');
 
 Page({
@@ -12,6 +15,7 @@ Page({
         scrollTop: 100,
         editing: false,
         canAddPic: true,
+        bgImgUrl: '',
         moments: [],
         currentIndex: 0,
         deleteHide: 'hide'
@@ -19,8 +23,9 @@ Page({
     //事件处理函数
     addPicsTap(){
         var that = this;
+        var len = that.data.moments.length;
         wx.chooseImage({
-            count: 9,
+            count: 9 - len,
             sizeType: ['original', 'compressed'],
             sourceType: ['album', 'camera'],
             success: function(res) {
@@ -30,13 +35,14 @@ Page({
                     that.data.moments.push({
                         current: 1,
                         url: item,
-                        check: index === 0,
-                        change: index !== 0
+                        check: len ? 0 : index === 0,
+                        change: len ? 1 : index !== 0
                     })
                 });
 
                 that.setData({
-                    moments: that.data.moments
+                    moments: that.data.moments,
+                    canAddPic: that.data.moments.length !== 9
                 });
 
                 that.saveDataToStorage(that.data.moments);
@@ -56,7 +62,7 @@ Page({
             item.change = false;
             item.current = 0;
         });
-
+        this.saveDataToStorage(this.data.moments);
         this.setData({
             editing: false,
             canAddPic: false,
@@ -81,7 +87,8 @@ Page({
 
         this.setData({
             moments: this.data.moments,
-            editing: true
+            editing: true,
+            canAddPic: this.data.moments.length !== 9
         });
 
         this.saveDataToStorage(this.data.moments);
@@ -104,7 +111,7 @@ Page({
         var that = this;
         wx.chooseImage({
             count: 1,
-            sizeType: ['original', 'compressed'],
+            sizeType: ['compressed'],
             sourceType: ['album', 'camera'],
             success: function(res) {
                 var tempFilePaths = res.tempFilePaths[0];
@@ -116,9 +123,9 @@ Page({
             }
         });
     },
-    saveDataToStorage(data) {
+    saveDataToStorage(data, key) {
         wx.setStorage({
-            key: Storage_KEY,
+            key: key || Storage_KEY,
             data: data,
             success: function() {
                 //
@@ -128,62 +135,49 @@ Page({
             }
         });
     },
-    upper: function(e) {
-        console.log(e)
-    },
-    lower: function(e) {
-        console.log(e)
-    },
-    scroll: function(e) {
-        console.log(e)
-    },
-    tap: function(e) {
-        for (var i = 0; i < order.length; ++i) {
-            if (order[i] === this.data.toView) {
-                this.setData({
-                    toView: order[i + 1]
-                })
-                break
-            }
-        }
-    },
-    tapMove: function(e) {
-        this.setData({
-            scrollTop: this.data.scrollTop + 10
-        })
-    },
-    bindImageTap: function() {
+    bindChangeBgImageTap: function() {
+        var that = this;
         wx.chooseImage({
-            count: 9, // 默认9
-            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            count: 1, // 默认9
+            sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
             sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
             success: function(res) {
                 // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
-                var tempFilePaths = res.tempFilePaths
+                var tempFilePaths = res.tempFilePaths[0];
+                that.setData({
+                    bgImgUrl: tempFilePaths
+                });
+                that.saveDataToStorage(tempFilePaths, BG_STORAGE_KEY);
             }
         });
-    },
-    bindVideoTap: function() {
-        var that = this
-        wx.chooseVideo({
-            sourceType: ['album', 'camera'],
-            maxDuration: 60,
-            camera: 'back',
-            success: function(res) {
-                /*that.setData({
-                    src: res.tempFilePath
-                })*/
-            }
-        })
     },
     loadData() {
         var that = this;
         //调用应用实例的方法获取全局数据
+        wx.getStorage({
+            key: USER_INFO_STORAGE_KEY,
+            success: function(res) {
+                that.setData({
+                    userInfo: res.data
+                })
+            }
+        });
+
+        wx.getStorage({
+            key: BG_STORAGE_KEY,
+            success: function(res) {
+                that.setData({
+                    bgImgUrl: res.data
+                })
+            }
+        });
+
         app.getUserInfo(function(userInfo) {
             //更新数据
             that.setData({
                 userInfo: userInfo
             });
+            that.saveDataToStorage(userInfo, USER_INFO_STORAGE_KEY);
         });
 
         this.setData({
@@ -194,6 +188,11 @@ Page({
             key: Storage_KEY,
             success: function(res) {
                 var data = res.data;
+                data.forEach(function(item) {
+                    item.check = false;
+                    item.change = false;
+                    item.current = 0;
+                });
                 that.setData({
                     moments: data
                 });
@@ -202,28 +201,6 @@ Page({
 
             }
         });
-    },
-    imageOnLoad(e) {
-        console.log(this);
-        wx.getImageInfo({
-            src: e.target.dataset.src,
-            success: function(res) {
-                console.log(res.width)
-                console.log(res.height)
-            }
-        })
-    },
-    showImageDelete() {
-        this.setData({
-            deleteHide: ""
-        });
-    },
-    pageTap(e) {
-        if (!e.target.dataset.isimg) {
-            this.setData({
-                deleteHide: "hide"
-            });
-        }
     },
     bindPreviewImageTap(){
         var urls = [];
@@ -239,7 +216,7 @@ Page({
     deletePhoto() {
         var that = this;
         wx.showModal({
-            title: '确定要该删除图片吗',
+            title: '确定要删除这张图片吗',
             success: function(res) {
                 if (res.confirm) {
                     that.data.moments.splice(that.data.currentIndex, 1);
@@ -251,7 +228,8 @@ Page({
                     }
 
                     that.setData({
-                        moments: that.data.moments
+                        moments: that.data.moments,
+                        canAddPic: that.data.moments.length !== 9
                     });
 
                     that.saveDataToStorage(that.data.moments);
@@ -266,5 +244,8 @@ Page({
     },
     onShow() {
         this.loadData();
+        this.setData({
+            canAddPic: !!this.data.moments.length
+        });
     }
 })
