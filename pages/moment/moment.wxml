@@ -19,13 +19,13 @@
                 <image class="moment-preview__item-avatar" src="{{userInfo.avatarUrl || '../img/default-logo.png'}}" alt=""/>
                 <view class="moment-preview__item-content">
                     <view class="moment-preview__item-name">{{userInfo.nickName}}</view>
-                    <view class="moment-preview__item-text">测试文案测试文案测试文案, 测试文案测试文案测试文案,测试文案测试文案测试文案,</view>
+                    <textarea value="测试文案测试文案测试文案, 测试文案测试文案测试文案,测试文案测试文案测试文案," auto-height class="moment-preview__item-text" style="width:100%;"/>
 
                     <!--有几个图就用数字 moment-preview__item-imgs_ 1 2 3 4 5 6 7 8 9 -->
-                    <view class="moment-preview__item-imgs moment-preview__item-imgs_{{moments.length + 1}}">
+                    <view class="moment-preview__item-imgs moment-preview__item-imgs_{{moments.length + (editing ? 1 : 0)}}">
                         <!--当前选中 moment-preview__item-pic-box_current-->
-                        <view wx:key="url" wx:for="{{moments}}" wx:for-index="idx" wx:for-item="item" class="moment-preview__item-pic-box {{item.current ? 'moment-preview__item-pic-box_current' : ''}}" data-index="{{idx}}" bindtap="{{item.change ? 'changeImage' : 'checkImage'}}">
-                            <image background-size="cover" src="{{item.url}}" alt="" class="moment-preview__item-pic"/>
+                        <view style="{{moments.length + (editing ? 1 : 0) === 1 ? ('height:' + one_height + 'px;width:'+one_width+ 'px;') : ''}}" wx:key="url" wx:for="{{moments}}" wx:for-index="idx" wx:for-item="item" class="moment-preview__item-pic-box {{item.current ? 'moment-preview__item-pic-box_current' : ''}}" data-index="{{idx}}" bindtap="{{item.change ? 'changeImage' : 'checkImage'}}">
+                            <image style="{{moments.length + (editing ? 1 : 0) === 1 ? ('height:' + one_height + 'px;width:'+one_width+ 'px;') : ''}}" mode="{{ moments.length + (editing ? 1 : 0) === 1 ? 'aspectFit' : 'aspectFill'}}" src="{{item.url}}" alt="" class="moment-preview__item-pic"/>
                             <image wx:if="{{item.change}}" src="../img/change.png" alt="" class="moment-preview__item-pic-icon moment-preview__item-pic-icon_change"/>
                             <image wx:if="{{item.check}}" src="../img/check.png" alt="" class="moment-preview__item-pic-icon moment-preview__item-pic-icon_check"/>
                         </view>
@@ -35,7 +35,7 @@
 
                     </view>
 
-                    <view class="moment-preview__item-location">深圳 腾讯科技有限公司</view>
+                    <input value="深圳 腾讯科技有限公司" class="moment-preview__item-location" />
                     <view class="moment-preview__item-meta">
                         <view class="moment-preview__item-date">23天前</view>
                         <image src="../img/comment.png" alt="" class="moment-preview__item-reply"/>
@@ -44,11 +44,13 @@
             </view>
         </view>
     </view>
+
     <view style="{{editing ? '' : 'display:none;'}}" class="moment-preview__copyright">Made by addyxu & zedhuang</view>
 
     <view style="{{editing ? '' : 'display:none;'}}" class="moment-preview__action-box">
         <view class="moment-preview__action ui-flex">
-            <view bindtap="bindPreviewImageTap" class="moment-preview__action-btn ui-flex__item">预览</view>
+            <view bindtap="bindPreviewImageTap" class="moment-preview__action-btn ui-flex__item moment-preview__action-preview">预览</view>
+            <view bindtap="bindReplaceImageTap" class="moment-preview__action-btn ui-flex__item">替换</view>
             <view bindtap="deletePhoto" class="moment-preview__action-btn ui-flex__item moment-preview__action-btn_delete">删除</view>
             <view bindtap="finishEditor" class="moment-preview__action-btn moment-preview__action-btn_actived ui-flex__item moment-preview__action-btn_done">完成</view>
         </view>

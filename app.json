@@ -1,11 +1,13 @@
 {
-  "pages":[
-    "pages/moment/moment"
-  ],
-  "window":{
-    "backgroundTextStyle":"light",
-    "navigationBarBackgroundColor": "#171925",
-    "navigationBarTitleText": "朋友圈预览",
-    "navigationBarTextStyle":"#fff"
-  }
+    "pages": [
+
+        "pages/moment/moment",
+        "pages/cut/cut"
+    ],
+    "window": {
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#171925",
+        "navigationBarTitleText": "九张图",
+        "navigationBarTextStyle": "#fff"
+    }
 }

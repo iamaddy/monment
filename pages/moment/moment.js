@@ -37,13 +37,17 @@ Page({
                         url: item,
                         check: len ? 0 : index === 0,
                         change: len ? 1 : index !== 0
-                    })
+                    });
                 });
 
                 that.setData({
                     moments: that.data.moments,
                     canAddPic: that.data.moments.length !== 9
                 });
+
+                if(that.data.moments.length === 1){
+                    that.setOneImageStyle();
+                }
 
                 that.saveDataToStorage(that.data.moments);
 
@@ -55,8 +59,43 @@ Page({
             }
         });
     },
-    finishEditor() {
+    setOneImageStyle(){
+        if(this.data.moments.length !== 1) return;
 
+        var url = this.data.moments[0].url, that = this;
+        wx.getImageInfo({
+            src: url,
+            success: function (res) {
+                var res_width = res.width;
+                var res_height = res.height;
+                var windowWidth = wx.getSystemInfoSync().windowWidth;
+                var MaxValue = windowWidth < 375 ? 150 : 180, width, height;
+                if(res_width > res_height){
+                    if(res_width >= MaxValue){
+                        width = MaxValue;
+                        height = res_height / res_width * width;
+                    }else{
+                        width = res_width;
+                        height = res_height;
+                    }
+                }else{
+                    if(res_height >= MaxValue){
+                        height = MaxValue;
+                        width = res_width / res_height * height;
+                    }else{
+                        width = res_width;
+                        height = res_height;
+                    }
+                }
+                console.log(height, width);
+                that.setData({
+                    one_height: height,
+                    one_width: width
+                });
+            }
+        });
+    },
+    finishEditor() {
         this.data.moments.forEach(function(item) {
             item.check = false;
             item.change = false;
@@ -107,7 +146,7 @@ Page({
         });
         this.saveDataToStorage(this.data.moments);
     },
-    bindChangeImageTap: function(event) {
+    bindReplaceImageTap: function() {
         var that = this;
         wx.chooseImage({
             count: 1,
@@ -115,7 +154,7 @@ Page({
             sourceType: ['album', 'camera'],
             success: function(res) {
                 var tempFilePaths = res.tempFilePaths[0];
-                that.data.moments[event.target.dataset.index].images.splice(event.target.dataset.idx, 1, tempFilePaths);
+                that.data.moments[that.data.currentIndex].url = tempFilePaths;
                 that.setData({
                     moments: that.data.moments
                 });
@@ -168,7 +207,7 @@ Page({
             success: function(res) {
                 that.setData({
                     bgImgUrl: res.data
-                })
+                });
             }
         });
 
@@ -194,8 +233,13 @@ Page({
                     item.current = 0;
                 });
                 that.setData({
-                    moments: data
+                    moments: data,
+                    canAddPic: !data.length
                 });
+
+                if(that.data.moments.length === 1){
+                    that.setOneImageStyle();
+                }
             },
             fail: function(res) {
 
@@ -213,6 +257,15 @@ Page({
             urls: urls
         })
     },
+    onShareAppMessage: function() {
+        return {
+            title: '九张图',
+            desc: '还在为发票圈而烦恼吗？快来试试这个神器！',
+            path: '/pages/moment/moment',
+            cancel() {},
+            complete() {}
+        }
+    },
     deletePhoto() {
         var that = this;
         wx.showModal({
@@ -229,8 +282,13 @@ Page({
 
                     that.setData({
                         moments: that.data.moments,
-                        canAddPic: that.data.moments.length !== 9
+                        canAddPic: that.data.moments.length !== 9,
+                        editing: that.data.moments.length !== 0
                     });
+
+                    if(that.data.moments.length === 1){
+                        that.setOneImageStyle();
+                    }
 
                     that.saveDataToStorage(that.data.moments);
                 } else if (res.cancel) {
@@ -245,7 +303,7 @@ Page({
     onShow() {
         this.loadData();
         this.setData({
-            canAddPic: !!this.data.moments.length
-        });
+            editing: false
+        })
     }
 })

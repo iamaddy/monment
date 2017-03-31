@@ -1,0 +1,2 @@
+<image bindtap="viewImage" src="{{img_url}}" data-src="{{img_url}}"/>
+

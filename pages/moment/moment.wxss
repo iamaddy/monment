@@ -734,9 +734,12 @@ dl,li,ol,ul {
 
 .moment-preview__name {
     position: absolute;
+    bottom: 10px;
     right: 100px;
-    color: #fff;
-    bottom: 15px
+    font-size: 17px;
+    font-weight: bolder;
+    color: #fffbf2;
+    text-shadow: 0 1px 2px #212227
 }
 
 .moment-preview__avatar {
@@ -747,8 +750,8 @@ dl,li,ol,ul {
 }
 
 .moment-preview__avatar-img {
-    width: 74px;
-    height: 74px;
+    width: 70px;
+    height: 70px;
     display: block;
     padding: 2px;
     background-color: #fff
@@ -785,7 +788,8 @@ dl,li,ol,ul {
 .moment-preview__item-name {
     font-size: 15px;
     color: #576b95;
-    margin-bottom: 6px
+    margin-bottom: 6px;
+    font-weight: bolder
 }
 
 .moment-preview__item-text {
@@ -914,33 +918,29 @@ dl,li,ol,ul {
 }
 
 .moment-preview__action-btn {
-    line-height: 40px
+    position: relative;
+    line-height: 40px;
+    margin: 0 1px
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2),only screen and (min-device-pixel-ratio:2) {
-    .moment-preview__action-btn {
-        border:none;
-        background-image: -webkit-linear-gradient(270deg,transparent,transparent 50%,transparent 0),-webkit-linear-gradient(180deg,#333,#333 50%,transparent 0),-webkit-linear-gradient(90deg,transparent,transparent 50%,transparent 0),-webkit-linear-gradient(0,transparent,transparent 50%,transparent 0);
-        background-size: 100% 1px,1px 100%,100% 1px,1px 100%;
-        background-repeat: no-repeat;
-        background-position: top,100% 0,bottom,0 0
-    }
-}
-
-@media only screen and (-webkit-min-device-pixel-ratio: 2),only screen and (min-device-pixel-ratio:2) {
-    .moment-preview__action-btn:last-child {
-        border:none;
-        background-image: -webkit-linear-gradient(270deg,transparent,transparent 50%,transparent 0),-webkit-linear-gradient(180deg,transparent,transparent 50%,transparent 0),-webkit-linear-gradient(90deg,transparent,transparent 50%,transparent 0),-webkit-linear-gradient(0,transparent,transparent 50%,transparent 0);
-        background-size: 100% 1px,1px 100%,100% 1px,1px 100%;
-        background-repeat: no-repeat;
-        background-position: top,100% 0,bottom,0 0
-    }
+.moment-preview__action-btn:after {
+    content: "";
+    height: 10px;
+    width: 1px;
+    background-color: #333;
+    position: absolute;
+    right: -1px;
+    top: 15px
 }
 
 .moment-preview__action-btn:active,.moment-preview__action-btn:hover {
     background: -webkit-linear-gradient(top,rgba(85,85,85,.65),#000 100px);
     background: -webkit-linear-gradient(270deg,rgba(85,85,85,.65),#000 100px);
     background: linear-gradient(180deg,rgba(85,85,85,.65),#000 100px)
+}
+
+.moment-preview__action-preview {
+    color: #7ed321
 }
 
 .moment-preview__action-btn_delete {
@@ -978,6 +978,12 @@ dl,li,ol,ul {
         height: auto;
         max-width: 150px;
         max-height: 150px
+    }
+}
+
+@media only screen and (min-device-width: 376px) {
+    .moment-preview__item-imgs {
+        max-width:260px
     }
 }
 
